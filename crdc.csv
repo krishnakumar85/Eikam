@@ -1,0 +1,14 @@
+;;;;;;;;;;
+Message Name;Parameter Name;Type;Dim1;Dim2;Size;Aircraft Signal Name;Joining Key 1;Joininig Key 2;Status;Protocol
+M_GEN_SIG1;ENG1;int;1;1;1;TRUE;Eng1;;TRUE;AFDX
+M_GEN_SIG1;ENG2;int;1;1;1;FALSE;Eng2;;TRUE;AFDX
+M_GEN_SIG1;LG;int;1;1;1;TRUE;Ldng;;TRUE;AFDX
+M_GEN_SIG1;RUN1;int;1;1;1;FALSE;run;;TRUE;AFDX
+M_GEN_SIG1;RUN2;int;1;1;1;TRUE;run;;TRUE;AFDX
+M_GEN_SIG1;THR1;double;1;1;1;TRUE;thr;;TRUE;CAN
+M_GEN_SIG1;THR2;double;1;1;1;TRUE;thr;;TRUE;CAN
+M_GEN_SIG2;TEMP1;double;1;1;1;TRUE;temp1;;FALSE;CAN
+M_GEN_SIG2;TEMP2;double;1;1;1;TRUE;temp2;;FALSE;CAN
+M_GEN_SIG2;PRS1;float;1;1;1;TRUE;prs1;;FALSE;CAN
+M_GEN_SIG2;PRS2;float;1;1;1;FALSE;prs2;;FALSE;A429
+M_GEN_SIG3;FFRUN;logical;1;1;1;FALSE;run;;FALSE;A429
