@@ -3,10 +3,16 @@ import csv
 import md5
 from DataStore import *
 
-class Parser:
+class ParserException(Exception):
     pass
 
-class CSVParser:
+class Parser:
+    @staticmethod
+    def register_extension():
+        raise ParserException("Need to register an extension! override 'register_extension' static method")
+    pass
+
+class CSVParser(Parser):
     def __init__(self, filename, hasHeader=True):
         self.filename = filename
         self.hasHeader = hasHeader
@@ -16,6 +22,10 @@ class CSVParser:
         self.mystore = ToolDataStore(self)
         self.internalstore = InternalDataStore()
         # initialise ToolDatabase object for this file
+    
+    @staticmethod
+    def register_extension():
+        return 'csv'
     
     def get_header(self):
         
@@ -59,7 +69,7 @@ class CSVParser:
         self.get_header()
         self.mystore.reinit()
         for line in csv.reader(self.fd, self.dialect):
-            print line
+            #print line
             self.mystore.insert_parsed_record(line)
         self.fd.close()
         
@@ -71,6 +81,30 @@ class CSVParser:
                 self.__md5 = md5.new(open(self.filename).read()).hexdigest()
             return self.__md5
 
-class XLSParser:
+class XLSParser(Parser):
     def __init__(self,filename):
         self.filename = filename
+    
+    @staticmethod
+    def register_extension():
+        return 'xls'
+        
+__Parsers__ = [CSVParser, XLSParser]
+
+def parse(filename, type=None):
+    """
+        @summary: Wrapper function to choose a proper Parser class.
+        @return: Parser instance
+        @param filename: The file that needs to be parsed.
+        @param type: to identify the type of parser to be chosen (Future use)
+    """
+    xtn = os.path.basename(filename).rsplit('.', 1)[1]
+    for thisparser in __Parsers__:
+        #TODO: check parameter 'type' for extension
+        if thisparser.register_extension() == xtn:
+            #FIXME: use args and kwargs
+            return thisparser(filename) 
+
+
+if __name__ == "__main__":
+    parse("..\crdc.csv", "csv")

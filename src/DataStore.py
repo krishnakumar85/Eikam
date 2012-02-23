@@ -63,7 +63,7 @@ class InternalDataStore:
             else:
                 ret_header_mapping[header_field] = new_mappings[header_field]
                 self.mapped_header.append(new_mappings[header_field])
-        print "MAPPED HEADER",self.mapped_header
+        #print "MAPPED HEADER",self.mapped_header
         cur.close()
         db.close()
         
@@ -110,14 +110,14 @@ class ToolDataStore:
             cur.execute("SELECT filename, md5sum, mtime from tool_input_info WHERE filename=?",(self.parser_obj.filename,))
             input_info = cur.fetchall()
             
-        print input_info
+        #print input_info
         self.filename = input_info[0][0]
         self.mtime = input_info[0][2]
         self.md5sum = input_info[0][1]
      
     def reinit(self):
         #drop table, create table
-        print "REINIT"
+        #print "REINIT"
         cur = self.db.cursor()
         cur.execute("DROP TABLE IF EXISTS "+self.clean_filename)
         self.db.commit()
@@ -126,7 +126,7 @@ class ToolDataStore:
         print type(mapped_header)
         table_fields = string.join(mapped_header,",")
         
-        print "table_fieds",table_fields
+        #print "table_fieds",table_fields
         cur.execute("CREATE TABLE "+self.clean_filename+"("+table_fields+")")
         self.db.commit()
         
@@ -134,9 +134,9 @@ class ToolDataStore:
         cur = self.db.cursor()
 
         mapped_header = self.parser_obj.internalstore.mapped_header
-        print mapped_header
+        #print mapped_header
         table_fields = string.join(mapped_header,",")
-        print record_data
+        #print record_data
         
         q_val = string.join(("? "*len(record_data)).split(),",")
         cur.execute("INSERT INTO "+self.clean_filename+"("+table_fields+") "+" VALUES ("+q_val+")", (record_data))
@@ -145,7 +145,7 @@ class ToolDataStore:
         #FIXME: update must be present only after the parsed content is stored in the db.
         cur.execute("UPDATE tool_input_info SET md5sum=?, mtime=? WHERE filename=?",(self.parser_obj.md5sum, self.parser_obj.mtime, self.parser_obj.filename))
         self.db.commit()
-        print "Data comitted"
+        #print "Data comitted"
 
     
     
